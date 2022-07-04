@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite parallel="false" name="Suite">
+  <parameter name="reportName" value="NEW_TEST"></parameter>
+  <test name="Test">
+    <classes>
+      <class name="tests.NewTest_1">
+		<methods>
+			<include name="f"/>
+		</methods>
+      </class>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
