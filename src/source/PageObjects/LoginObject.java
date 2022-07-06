@@ -1,8 +1,7 @@
 package PageObjects;
 
-import Core.PageObject;
 
-public class LoginObject extends PageObject {
+public class LoginObject {
 	
 	public LoginObject() {
 	}

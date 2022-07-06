@@ -3,9 +3,9 @@ package Pages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import Core.BaseTest;
 import Core.Constant;
-import Core.Report;
+import Core.Helper.Report.Report;
+import Core.Helper.Web.BaseTest;
 
 public class LoginPage extends BaseTest{
 	private Logger logger = LogManager.getLogger(LoginPage.class);

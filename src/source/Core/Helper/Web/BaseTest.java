@@ -1,4 +1,4 @@
-package Core;
+package Core.Helper.Web;
 
 import java.io.File;
 import java.time.Duration;
@@ -7,6 +7,9 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
+
+import Core.Helper.Report.Report;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;

@@ -12,8 +12,10 @@ import org.testng.annotations.Parameters;
 
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
-import Core.BaseTest;
-import Core.Report;
+import Core.Helper.Report.Report;
+import Core.Helper.Web.BaseTest;
+
+
 
 @Listeners()
 public class BasePage extends BaseTest{

@@ -5,6 +5,8 @@ import java.io.File;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import Core.Helper.Report.Report;
+
 public class test {
 
 	public static void main(String[] args) {
