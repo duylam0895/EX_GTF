@@ -1,1 +1,4 @@
 /target/
+.settings/
+test-output/
+result/
