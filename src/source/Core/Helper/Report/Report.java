@@ -59,36 +59,6 @@ public class Report {
 	}
 	
 	/**
-	 * Print Passed to log
-	 * @param title
-	 * @param description
-	 * @param message
-	 */
-	public static void logPass(String title, String description) {
-		log(Status.PASS, title, description, "");
-	}
-	
-	/**
-	 * Print Failed to log
-	 * @param title
-	 * @param description
-	 * @param message
-	 */
-	public static void logFailed(String title, String description, String message) {
-		log(Status.FAIL, title, description, message);
-		}
-	
-	/**
-	 * Print Info to log
-	 * @param title
-	 * @param description
-	 * @param message
-	 */
-	public static void logInfo(String title, String description, String message) {
-		log(Status.INFO, title, description, message);
-	}
-	
-	/**
 	 * Print log
 	 * @param title
 	 * @param description
@@ -111,6 +81,40 @@ public class Report {
 		default:
 			test.info(print);
 			break;
+		}
+	}
+	
+	public static void print(String title, String description, boolean isSuccess) {
+		log(Status.PASS, title, description, String.format("Action %s", isSuccess ? "Successfull" : "Unsuccessfull"));
+	}
+	
+	public static void compareEqual(String title, String description, String actValue, String expValue) {
+		actValue = actValue != null ? actValue : "";
+		expValue = expValue != null ? expValue : "";
+		
+		boolean isTrue = actValue.contentEquals(expValue);
+		
+		if(isTrue) {
+			String message = String.format("[%s] and [%s] is Equal", actValue, expValue);
+			log(Status.PASS, title, description, message);
+		}else {
+			String message = String.format("[%s] and [%s] is not Equal", actValue, expValue);
+			log(Status.FAIL, title, description, message);
+		}
+	}
+	
+	public static void compareContains(String title, String description, String actValue, String expValue) {
+		actValue = actValue != null ? actValue : "";
+		expValue = expValue != null ? expValue : "";
+		
+		boolean isTrue = actValue.contains(expValue);
+		
+		if(isTrue) {
+			String message = String.format("[%s] is Contains [%s]", actValue, expValue);
+			log(Status.PASS, title, description, message);
+		}else {
+			String message = String.format("[%s] is not Contains [%s]", actValue, expValue);
+			log(Status.FAIL, title, description, message);
 		}
 	}
 }
