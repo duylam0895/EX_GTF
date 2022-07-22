@@ -50,7 +50,7 @@ public class PersonalProperties {
 	private void readConfig(String propertiesPath) {
 		InputStream inputStream = null;
 		try {
-			 String currentDir = System.getProperty("user.dir") + File.separator + "dom" + File.separator;
+			 String currentDir = System.getProperty("user.dir") + File.separator + "src/test/resources/properties" + File.separator;
 			 inputStream = new FileInputStream(currentDir + propertiesPath);
 			 properties.load(inputStream);
 		} catch (IOException e) {

@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
 
-import BaseTest.Constant;
+import Core.BaseTest.Constant;
 import Core.Helper.Report.Report;
 
 import org.openqa.selenium.WebDriver;
@@ -61,7 +61,6 @@ public class BaseClass extends Report{
 	public static boolean navigate(String url) {
 		String stepDes = String.format("Navigate to [%s]", url);
 		logger.info(stepDes);
-		WebDriver a = driver;
 		driver.navigate().to(url);
 		return true;
 	}

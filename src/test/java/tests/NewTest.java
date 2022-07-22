@@ -2,7 +2,7 @@ package tests;
 
 import org.testng.annotations.Test;
 
-import BaseTest.Constant;
+import Core.BaseTest.Constant;
 import Core.Helper.Report.Report;
 import Core.Helper.Web.BaseClass;
 import Pages.LoginPage;

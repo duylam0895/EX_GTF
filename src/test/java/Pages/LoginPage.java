@@ -1,8 +1,8 @@
 package Pages;
 
-import BaseTest.BaseWebPage;
+import Core.BaseTest.BaseWeb;
 
-public class LoginPage extends BaseWebPage{
+public class LoginPage extends BaseWeb{
 
 	public void initBrowser() {
 		System.out.print("Open Browser");

@@ -1,4 +1,4 @@
-package BaseTest;
+package Core.BaseTest;
 
 public class Constant {
 	public static String WEBSITE_PATH;

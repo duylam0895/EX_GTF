@@ -1,4 +1,4 @@
-package BaseTest;
+package Core.BaseTest;
 
 import java.io.File;
 
@@ -31,7 +31,7 @@ public class BaseTest {
 
     @AfterSuite
     public void afterSuite() {
-    	//Report.closeReports();
+    	Report.closeReports();
     }
 
     @BeforeMethod
