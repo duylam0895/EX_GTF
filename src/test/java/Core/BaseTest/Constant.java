@@ -1,10 +1,33 @@
 package Core.BaseTest;
 
+import java.lang.reflect.Field;
+
 public class Constant {
 	public static String WEBSITE_PATH;
 	
-	public final static String IMPLIXIT_WAIT = System.getProperty("ImplixitWait");
-	public final static String EXPLIXIT_WAIT = System.getProperty("ExplixitWait");
+	public final static int IMPLIXIT_WAIT = Integer.parseInt(System.getProperty("ImplixitWait"));
+	public final static int EXPLIXIT_WAIT = Integer.parseInt(System.getProperty("ExplixitWait"));
 	public final static String PROPERTIES_PATH = System.getProperty("PropertiesPath");
-	public static String URL = "";
+	static String URL;
+	
+	public static void setValue(String key, String value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		Object obj = new Object();
+		Field field = Constant.class.getDeclaredField(key);
+		field.set(obj, value);
+	}
+	
+	public static Object getValue(String key){
+		Object obj = new Object();
+		try {
+			Field field = Constant.class.getDeclaredField(key);
+			return field.get(obj);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Field[] getListField() {
+		return Constant.class.getDeclaredFields();
+	}
 }

@@ -4,7 +4,7 @@
   <parameter name="url" value="https://www.lambdatest.com/selenium-playground/"></parameter>
   <test name="Test">
     <classes>
-      <class name="tests.NewTest">
+      <class name="Tests.Demo">
 		<methods>
 			<include name="test"/>
 		</methods>

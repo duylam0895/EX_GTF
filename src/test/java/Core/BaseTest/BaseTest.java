@@ -13,20 +13,17 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import Core.Helper.Properties.PersonalProperties;
 import Core.Helper.Report.Report;
-import Core.Helper.Web.BaseClass;
 
 
 public class BaseTest {
-	public BaseClass base = new BaseClass();
-	@Parameters({ "reportName", "url"})
+	@Parameters({ "reportName"})
 	@BeforeSuite
-    public void beforeSuite(String reportName, String url) {
+    public void beforeSuite(String reportName) {
 		String name = reportName + "_" + Report.getDate();
 		String filePath = System.getProperty("user.dir") + File.separator + "result" + File.separator + name + ".html";
 		name = reportName + "_" + Report.getDate("dd-MM-yyyy_hh:mm:ss");
 		Report.setReports(Report.getSparkReporter(filePath, Theme.STANDARD, name));
 		PersonalProperties.getInstance(Constant.PROPERTIES_PATH);
-		Constant.URL = url;
     }
 
     @AfterSuite
@@ -36,8 +33,6 @@ public class BaseTest {
 
     @BeforeMethod
     public void beforeMethod(ITestResult result) {
-        System.out.println("BasePage Before Test Method");
-        Report.setTest(result.getMethod().getMethodName());
     }
 
     @AfterMethod

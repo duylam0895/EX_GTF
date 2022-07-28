@@ -9,14 +9,13 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
 
 import Core.BaseTest.Constant;
-import Core.Helper.Report.Report;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 
-public class BaseClass extends Report{
+public class BaseClass{
 
 	public static WebDriver driver;
 	private static final String DIR_CHROME_DRIVER = System.getProperty("user.dir") + File.separator + "driver\\chromedriver.exe";
@@ -37,7 +36,7 @@ public class BaseClass extends Report{
 		logger.info(stepDes);
 		System.setProperty("webdriver.chrome.driver", DIR_CHROME_DRIVER);
 		ChromeOptions options = new ChromeOptions();
-		Duration timeout = Duration.ofSeconds(Long.parseLong(Constant.IMPLIXIT_WAIT));
+		Duration timeout = Duration.ofSeconds(Constant.IMPLIXIT_WAIT);
 		//TODO: Add more option here in the future
 		try {
 			if(driver != null) driver.close();
@@ -62,7 +61,7 @@ public class BaseClass extends Report{
 		String stepDes = String.format("Navigate to [%s]", url);
 		logger.info(stepDes);
 		driver.navigate().to(url);
-		return true;
+		return waitPageLoad(Constant.IMPLIXIT_WAIT);
 	}
 	
 	/***
@@ -186,5 +185,14 @@ public class BaseClass extends Report{
 		System.out.println("Quit browser");
 		driver.close();
 		driver.quit();
+	}
+	
+	public static String getText(WebElement element) {
+		try {
+			return element.getText() != null? element.getText() : "";
+		}catch (NullPointerException e) {
+			e.printStackTrace();
+			return e.toString();
+		}
 	}
 }

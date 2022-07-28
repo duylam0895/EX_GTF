@@ -88,6 +88,14 @@ public class Report {
 		log(Status.PASS, title, description, String.format("Action %s", isSuccess ? "Successfull" : "Unsuccessfull"));
 	}
 	
+	public static void isTrue(String title, String description, boolean isTrue) {
+		if(isTrue) {
+			log(Status.PASS, title, description, String.format("Action Successfull"));
+		}else {
+			log(Status.FAIL, title, description, String.format("Action Unsuccessfull"));
+		}
+	}
+	
 	public static void compareEqual(String title, String description, String actValue, String expValue) {
 		actValue = actValue != null ? actValue : "";
 		expValue = expValue != null ? expValue : "";
@@ -95,10 +103,10 @@ public class Report {
 		boolean isTrue = actValue.contentEquals(expValue);
 		
 		if(isTrue) {
-			String message = String.format("[%s] and [%s] is Equal", actValue, expValue);
+			String message = String.format(" [%s] and [%s] are Equal", actValue, expValue);
 			log(Status.PASS, title, description, message);
 		}else {
-			String message = String.format("[%s] and [%s] is not Equal", actValue, expValue);
+			String message = String.format(" [%s] and [%s] are not Equal", actValue, expValue);
 			log(Status.FAIL, title, description, message);
 		}
 	}
