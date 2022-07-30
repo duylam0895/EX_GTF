@@ -66,8 +66,9 @@ public class Report {
 	 */
 	public static void log(Status status, String title, String description, String message) {
 		String time = getDate("dd-MM-yyyy_hh:mm:ss");
-		String template = "[" + time + "]-[%s]-[%s]-[%s]-[%s]";
+		String template = "[" + time + "]-[%s]-[%s]-[%s]-%s";
 		String print = String.format(template, status.toString(), title, description, message);
+		System.out.println(print);
 		switch(status) {
 		case FAIL:
 			test.fail(print);
@@ -84,10 +85,33 @@ public class Report {
 		}
 	}
 	
+
+	/**
+	 * Print info Log
+	 * @param title
+	 * @param description
+	 * @param isSuccess
+	 */
 	public static void print(String title, String description, boolean isSuccess) {
 		log(Status.PASS, title, description, String.format("Action %s", isSuccess ? "Successfull" : "Unsuccessfull"));
 	}
 	
+	/**
+	 * Print info Log
+	 * @param title
+	 * @param description
+	 * @param handle
+	 */
+	public static void print(String title, String description, ReportHandle handle) {
+		log(Status.PASS, title, description, String.format("Action %s", handle.isTrue ? "Successfull" : ("Unsuccessfull " + (handle.exceptionThrown == null ? "" : handle.exceptionThrown.getMessage()))));
+	}
+	
+	/**
+	 * Print log base on isTrue param
+	 * @param title
+	 * @param description
+	 * @param isTrue
+	 */
 	public static void isTrue(String title, String description, boolean isTrue) {
 		if(isTrue) {
 			log(Status.PASS, title, description, String.format("Action Successfull"));
@@ -95,7 +119,28 @@ public class Report {
 			log(Status.FAIL, title, description, String.format("Action Unsuccessfull"));
 		}
 	}
+
+	/**
+	 * Print log base on handle param
+	 * @param title
+	 * @param description
+	 * @param handle
+	 */
+	public static void isTrue(String title, String description, ReportHandle handle) {
+		if(handle.isTrue) {
+			log(Status.PASS, title, description, String.format(handle.message + " Action Successfull "));
+		}else {
+			log(Status.FAIL, title, description, String.format(handle.message + " Action Unsuccessfull " + (handle.exceptionThrown == null ? "" : handle.exceptionThrown.getMessage())));
+		}
+	}
 	
+	/**
+	 * Print log return a compare Equal result
+	 * @param title
+	 * @param description
+	 * @param actValue
+	 * @param expValue
+	 */
 	public static void compareEqual(String title, String description, String actValue, String expValue) {
 		actValue = actValue != null ? actValue : "";
 		expValue = expValue != null ? expValue : "";
@@ -103,14 +148,21 @@ public class Report {
 		boolean isTrue = actValue.contentEquals(expValue);
 		
 		if(isTrue) {
-			String message = String.format(" [%s] and [%s] are Equal", actValue, expValue);
+			String message = String.format(" Actual [%s] and Expected [%s] are Equal", actValue, expValue);
 			log(Status.PASS, title, description, message);
 		}else {
-			String message = String.format(" [%s] and [%s] are not Equal", actValue, expValue);
+			String message = String.format(" Actual [%s] and Expected [%s] are not Equal", actValue, expValue);
 			log(Status.FAIL, title, description, message);
 		}
 	}
 	
+	/**
+	 * Print log return a compare Contains result
+	 * @param title
+	 * @param description
+	 * @param actValue
+	 * @param expValue
+	 */
 	public static void compareContains(String title, String description, String actValue, String expValue) {
 		actValue = actValue != null ? actValue : "";
 		expValue = expValue != null ? expValue : "";
@@ -122,6 +174,68 @@ public class Report {
 			log(Status.PASS, title, description, message);
 		}else {
 			String message = String.format("[%s] is not Contains [%s]", actValue, expValue);
+			log(Status.FAIL, title, description, message);
+		}
+	}
+	
+	/**
+	 * Print log until condition sastify
+	 * @param title
+	 * @param description
+	 * @param method
+	 */
+	public static void waitCondition(String title, String description, ReportHandleInterface method, int durationSeconds, int pollingTimeSeconds) {
+		int duration = durationSeconds;
+		ReportHandle handle = new ReportHandle();
+		String message = String.format(" Time out after %s seconds", duration);
+		while(duration >= 0) {
+			handle = method.operate();
+			if(handle.isTrue) {
+				break;
+			}
+			try {
+				Thread.sleep(pollingTimeSeconds);
+			}catch(InterruptedException e) {
+				handle.isTrue = false;
+				handle.exceptionThrown = e;
+			}
+			duration = duration - pollingTimeSeconds;
+		}
+		
+		if(handle.isTrue) {
+			log(Status.PASS, title, description, String.format(handle.message + " Action Successfull "));
+		}else {
+			log(Status.FAIL, title, description, String.format(handle.message + message + (handle.exceptionThrown == null ? "" : handle.exceptionThrown.getMessage())));
+		}
+	}
+	
+	/**
+	 * Print log until condition sastify
+	 * @param title
+	 * @param description
+	 * @param method
+	 */
+	public static void waitCondition(String title, String description, BooleanHandleInterface method, int durationSeconds, int pollingTimeSeconds) {
+		int duration = durationSeconds;
+		boolean handle = false;
+		pollingTimeSeconds = pollingTimeSeconds*1000;
+		String message = String.format(" Time out after %s seconds", duration);
+		while(duration >= 0) {
+			handle = method.operate();
+			if(handle) {
+				break;
+			}
+			try {
+				Thread.sleep(pollingTimeSeconds);
+			}catch(InterruptedException e) {
+				handle = false;
+			}
+			duration = duration - pollingTimeSeconds;
+		}
+		
+		if(handle) {
+			log(Status.PASS, title, description, " Action Successfull ");
+		}else {
 			log(Status.FAIL, title, description, message);
 		}
 	}

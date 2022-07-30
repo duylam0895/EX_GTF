@@ -9,19 +9,21 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
 
 import Core.BaseTest.Constant;
+import Core.BaseTest.Page;
+import Core.Helper.Report.ReportHandle;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 
-public class BaseClass{
+public class DriverClass{
 
 	public static WebDriver driver;
 	private static final String DIR_CHROME_DRIVER = System.getProperty("user.dir") + File.separator + "driver\\chromedriver.exe";
-	private static Logger logger = LogManager.getLogger(BaseClass.class);
+	private static Logger logger = LogManager.getLogger(DriverClass.class);
 	
-	public BaseClass() {
+	public DriverClass() {
 		
 	}
 	/***
@@ -39,7 +41,6 @@ public class BaseClass{
 		Duration timeout = Duration.ofSeconds(Constant.IMPLIXIT_WAIT);
 		//TODO: Add more option here in the future
 		try {
-			if(driver != null) driver.close();
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(timeout);
@@ -62,6 +63,31 @@ public class BaseClass{
 		logger.info(stepDes);
 		driver.navigate().to(url);
 		return waitPageLoad(Constant.IMPLIXIT_WAIT);
+	}
+	
+	/***
+	 * Navigate browser to url
+	 * 
+	 * @param url
+	 * @since 0.0.1
+	 * @author Lam
+	 */
+	public static ReportHandle navigate(Page page) {
+		String stepDes = String.format("Navigate to [%s]", page.getURL());
+		logger.info(stepDes);
+		ReportHandle handle = new ReportHandle();
+		boolean isDone = false;
+		try {
+			driver.navigate().to(page.getURL());
+			isDone = waitPageLoad(Constant.IMPLIXIT_WAIT);
+			if(isDone) {
+				isDone = waitUntilDisplay(driver.findElement(page.getPageLocator()), Constant.EXPLIXIT_WAIT);
+			}
+		}catch (Exception e) {
+			handle.updateStatus(false, String.format("Time out after %s seconds", Constant.EXPLIXIT_WAIT), e);
+		}
+		handle.updateStatus(isDone, "", null);
+		return handle;
 	}
 	
 	/***
@@ -96,18 +122,19 @@ public class BaseClass{
 	 * @author Lam
 	 * @return
 	 */
-	public static boolean click(WebElement objEle) {
+	public static ReportHandle click(WebElement objEle) {
 		String stepDes = String.format("Click Object [%s]", objEle.toString());
 		logger.info(stepDes);
-		
+		ReportHandle handle = new ReportHandle();
 		try {
 			objEle.click();
 		}catch(StaleElementReferenceException e) {
 			logger.error(stepDes + ": " + e.toString());
-			return false;
+			handle.updateStatus(false, "", e);
+			return handle;
 		}
-		
-		return true;
+		handle.updateStatus(true, "", null);
+		return handle;
 	}
 	
 	/***
@@ -156,19 +183,31 @@ public class BaseClass{
 	 * @since 0.0.1
 	 * @author Lam
 	 */
-	public static boolean sendKeys(WebElement objEle, String value) {
+	public static ReportHandle sendKeys(WebElement objEle, String value) {
 		String stepDes = String.format("Key [%s] value to Object [%s]", value, objEle.toString());
 		logger.info(stepDes);
-		
+		ReportHandle handle = new ReportHandle();
 		try {
 			objEle.sendKeys(value);
 		}catch(IllegalArgumentException e) {
 			logger.error(stepDes + ": " + e.toString());
-			return false;
+			handle.updateStatus(false, "", e);
+			return handle;
 		}
-		return true;
+		handle.updateStatus(true, "", null);
+		return handle;
 	}
 	
+	/***
+	 * Wait until Element display
+	 * 
+	 * @param objEle
+	 * @param secondTimes
+	 * @return
+	 * @thrown {@link TimeoutException} 
+	 * @since 0.0.1
+	 * @author Lam
+	 */
 	public static boolean waitUntilDisplay(WebElement objEle, int secondTimes) {
 		Duration timeout = Duration.ofSeconds(secondTimes);
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
@@ -181,12 +220,29 @@ public class BaseClass{
 		return result;
 	}
 	
+	/***
+	 * Quit browser
+	 * 
+	 * @param element
+	 * @return
+	 * @since 0.0.1
+	 * @author Lam
+	 */
 	public static void quitBrowser() {
 		System.out.println("Quit browser");
 		driver.close();
 		driver.quit();
 	}
 	
+	/***
+	 * Get Element Text
+	 * 
+	 * @param element
+	 * @return
+	 * @thrown {@link NullPointerException} 
+	 * @since 0.0.1
+	 * @author Lam
+	 */
 	public static String getText(WebElement element) {
 		try {
 			return element.getText() != null? element.getText() : "";
