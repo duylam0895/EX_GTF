@@ -38,6 +38,7 @@ public class DriverClass{
 		logger.info(stepDes);
 		System.setProperty("webdriver.chrome.driver", DIR_CHROME_DRIVER);
 		ChromeOptions options = new ChromeOptions();
+//		options.setHeadless(true);
 		Duration timeout = Duration.ofSeconds(Constant.IMPLIXIT_WAIT);
 		//TODO: Add more option here in the future
 		try {
@@ -128,7 +129,7 @@ public class DriverClass{
 		ReportHandle handle = new ReportHandle();
 		try {
 			objEle.click();
-		}catch(StaleElementReferenceException e) {
+		}catch(Exception e) {
 			logger.error(stepDes + ": " + e.toString());
 			handle.updateStatus(false, "", e);
 			return handle;
@@ -189,7 +190,7 @@ public class DriverClass{
 		ReportHandle handle = new ReportHandle();
 		try {
 			objEle.sendKeys(value);
-		}catch(IllegalArgumentException e) {
+		}catch(Exception e) {
 			logger.error(stepDes + ": " + e.toString());
 			handle.updateStatus(false, "", e);
 			return handle;
@@ -210,6 +211,50 @@ public class DriverClass{
 	 */
 	public static boolean waitUntilDisplay(WebElement objEle, int secondTimes) {
 		Duration timeout = Duration.ofSeconds(secondTimes);
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		boolean result = false;
+		try {
+			result = wait.until(ExpectedConditions.visibilityOf(objEle)) != null ? true : false;
+		}catch(TimeoutException exp) {
+			
+		}
+		return result;
+	}
+	
+	/***
+	 * Wait until Element display
+	 * 
+	 * @param objEle
+	 * @param secondTimes
+	 * @return
+	 * @thrown {@link TimeoutException} 
+	 * @since 0.0.1
+	 * @author Lam
+	 */
+	public static boolean waitUntilClickAble(WebElement objEle, int secondTimes) {
+		Duration timeout = Duration.ofSeconds(secondTimes);
+		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		boolean result = false;
+		try {
+			result = wait.until(ExpectedConditions.elementToBeClickable(objEle)) != null ? true : false;
+		}catch(TimeoutException exp) {
+			
+		}
+		return result;
+	}
+	
+	/***
+	 * Wait until Element display
+	 * 
+	 * @param objEle
+	 * @param secondTimes
+	 * @return
+	 * @thrown {@link TimeoutException} 
+	 * @since 0.0.1
+	 * @author Lam
+	 */
+	public static boolean waitUntilDisplay(WebElement objEle) {
+		Duration timeout = Duration.ofSeconds(Constant.EXPLIXIT_WAIT);
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
 		boolean result = false;
 		try {
@@ -249,6 +294,51 @@ public class DriverClass{
 		}catch (NullPointerException e) {
 			e.printStackTrace();
 			return e.toString();
+		}
+	}
+	
+	/***
+	 * Get Element Text
+	 * 
+	 * @param element
+	 * @return
+	 * @thrown {@link NullPointerException} 
+	 * @since 0.0.1
+	 * @author Lam
+	 */
+	public static ReportHandle switchWindow() {
+		ReportHandle handle = new ReportHandle();
+		handle.isTrue = true;
+		try {
+			for(String winHandle : driver.getWindowHandles()){
+			    driver.switchTo().window(winHandle);
+			}
+		    return handle;
+		}catch (NullPointerException e) {
+			e.printStackTrace();
+			return handle;
+		}
+	}	
+	
+	/***
+	 * Get Element Text
+	 * 
+	 * @param element
+	 * @return
+	 * @thrown {@link NullPointerException} 
+	 * @since 0.0.1
+	 * @author Lam
+	 */
+	public static ReportHandle selectDropdown(WebElement element, String visibleText) {
+		ReportHandle handle = new ReportHandle();
+		handle.isTrue = true;
+		try {
+			Select select = new Select(element);
+			select.selectByVisibleText(visibleText);
+		    return handle;
+		}catch (NullPointerException e) {
+			e.printStackTrace();
+			return handle;
 		}
 	}
 }

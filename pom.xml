@@ -80,8 +80,8 @@
 	            <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
 	          </suiteXmlFiles>
 	        <systemPropertyVariables>
-	            <ImplixitWait>10</ImplixitWait>
-	            <ExplixitWait>10</ExplixitWait>
+	            <ImplixitWait>5</ImplixitWait>
+	            <ExplixitWait>5</ExplixitWait>
 	            <ReportName>NEW_TEST</ReportName>
 	            <Url>https://www.lambdatest.com/selenium-playground/</Url>
 	            <Browser>Chrome</Browser>
