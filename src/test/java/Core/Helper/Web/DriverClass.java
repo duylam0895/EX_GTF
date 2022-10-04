@@ -2,6 +2,7 @@ package Core.Helper.Web;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.Set;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -309,6 +310,7 @@ public class DriverClass{
 	public static ReportHandle switchWindow() {
 		ReportHandle handle = new ReportHandle();
 		handle.isTrue = true;
+		Set<String> a = driver.getWindowHandles();
 		try {
 			for(String winHandle : driver.getWindowHandles()){
 			    driver.switchTo().window(winHandle);

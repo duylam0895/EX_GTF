@@ -1,9 +1,13 @@
 package Core.Helper.Excel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+
+import com.google.common.collect.Table;
 
 public class Data {
 
@@ -61,5 +65,21 @@ public class Data {
 	 */
 	public static String getData(String key) {
 		return data.get(key);
+	}
+	
+	public static List<Hashtable<String, String>> getListData(){
+		int maxRowIdx = ReadExcel.getRowsNumber(sheet, 0);
+		Hashtable<Integer, Hashtable<Integer, String>> table = ReadExcel.parseExcelToHash(sheet);
+		List<Hashtable<String, String>> result = new ArrayList<>();
+		for(int colIdx = 1; colIdx < table.size(); colIdx++) {
+			Hashtable<String, String> data = new Hashtable<>();
+			for(int rowIdx = 0; rowIdx < maxRowIdx; rowIdx ++) {
+				String title = table.get(0).get(rowIdx);
+				String value = table.get(colIdx).get(rowIdx);
+				data.put(title, value);
+			}
+			result.add(data);
+		}
+		return result;
 	}
 }

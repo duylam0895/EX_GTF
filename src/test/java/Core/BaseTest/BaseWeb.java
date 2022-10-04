@@ -11,12 +11,12 @@ import com.aventstack.extentreports.Status;
 import Core.Helper.Report.Report;
 import Core.Helper.Web.DriverClass;
 
-public class BaseWeb extends BaseTest{
+public class BaseWeb extends BaseTestNG{
     @BeforeMethod
 	@Parameters({"url"})
     public void beforeMethod(ITestResult result, @Optional("") String url) {
 		try {
-			url = url.equals("") ? Constant.URL : url;
+			url = BaseTestNG.url;
 	        System.out.println("BasePage Before Test Method");
 	        Report.setTest(result.getMethod().getMethodName());
 			Constant.setValue("URL", url);
@@ -26,9 +26,11 @@ public class BaseWeb extends BaseTest{
 			Report.log(Status.FAIL, "INIT TEST", "Failed during init test", e.toString());
 		}
     }
+    
     @AfterMethod
     public void afterMethod(ITestResult result) {
         System.out.println("BasePage After Test Method");
         DriverClass.quitBrowser();
     }
+
 }

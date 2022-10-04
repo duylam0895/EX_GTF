@@ -191,13 +191,13 @@ public class Report {
 		while(duration >= 0) {
 			handle = method.operate();
 			if(handle.isTrue) {
+				message = String.format("Sastify condition %s", handle.message);
 				break;
 			}
 			try {
 				Thread.sleep(pollingTimeSeconds);
 			}catch(InterruptedException e) {
 				handle.isTrue = false;
-				handle.exceptionThrown = e;
 			}
 			duration = duration - pollingTimeSeconds;
 		}

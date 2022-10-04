@@ -7,10 +7,7 @@ public class Constant {
 	
 	public final static int IMPLIXIT_WAIT = Integer.parseInt(System.getProperty("ImplixitWait"));
 	public final static int EXPLIXIT_WAIT = Integer.parseInt(System.getProperty("ExplixitWait"));
-	//public final static int CASE_FROM = Integer.parseInt(System.getProperty("CaseFrom"));
-	public final static String REPORT_NAME = System.getProperty("ReportName");
 	public final static String PROPERTIES_PATH = System.getProperty("PropertiesPath");
-	static String URL = System.getProperty("Url");
 	
 	public static void setValue(String key, String value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Object obj = new Object();
