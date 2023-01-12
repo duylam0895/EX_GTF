@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite parallel="false" name="Suite">
+  <parameter name="reportName" value="NEW_TEST"></parameter>
+  <parameter name="deviceName" value="pixel_4_xl"></parameter>
+  <parameter name="platformName" value="Android"></parameter>
+  <parameter name="appPackage" value="com.experitest.simplebrowser"></parameter>
+  <parameter name="appActivity" value=".WebViewActivity"></parameter>
+  <parameter name="hostUrl" value="http://localhost"></parameter>
+  <parameter name="hostPost" value="4723"></parameter>
+  <parameter name="hostPath" value="/wd/hub"></parameter>
+  <test name="Test">
+    <classes>
+      <class name="Tests.Web_Demo_3">
+		<methods>
+			<include name="test"/>
+		</methods>
+      </class>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

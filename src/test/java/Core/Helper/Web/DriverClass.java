@@ -2,6 +2,7 @@ package Core.Helper.Web;
 
 import java.io.File;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +44,7 @@ public class DriverClass{
 		try {
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(timeout);
+			driver.manage().timeouts().implicitlyWait(Constant.IMPLIXIT_WAIT, TimeUnit.SECONDS);
 		}catch(Exception e) {
 			e.printStackTrace();
 			logger.debug(stepDes + ": " + e.toString());
@@ -67,8 +68,7 @@ public class DriverClass{
 	
 	/***
 	 * Navigate browser to url
-	 * 
-	 * @param url
+	 *
 	 * @since 0.0.1
 	 * @author Lam
 	 */
@@ -92,19 +92,19 @@ public class DriverClass{
 	
 	/***
 	 * Wait Page load done until timeout
-	 * 
-	 * @param timeout
+	 *
+	 * @param timeoutInSecond
 	 * @return
 	 * @throws TimeoutException
 	 * @since 0.0.1
 	 * @author Lam
 	 */
-	public static boolean waitPageLoad(int secondTimes) {
-		String stepDes = String.format("Wait page load successfull until [%s] s", secondTimes);
+	public static boolean waitPageLoad(int timeoutInSecond) {
+		String stepDes = String.format("Wait page load successfull until [%s] s", timeoutInSecond);
 		logger.info(stepDes);
-		Duration timeout = Duration.ofSeconds(secondTimes);
+		Duration timeout = Duration.ofSeconds(timeoutInSecond);
 		try {
-			new WebDriverWait(driver, timeout).until(
+			new WebDriverWait(driver, timeoutInSecond).until(
 					driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
 		}catch(TimeoutException e) {
 			logger.error(stepDes + ": " + e.toString());
@@ -161,8 +161,7 @@ public class DriverClass{
 	
 	/***
 	 * Get Element of Object
-	 * 
-	 * @param propertyPath
+	 *
 	 * @param objPath
 	 * @throws {@link NoSuchElementException}
 	 * @since 0.0.1
@@ -210,7 +209,7 @@ public class DriverClass{
 	 */
 	public static boolean waitUntilDisplay(WebElement objEle, int secondTimes) {
 		Duration timeout = Duration.ofSeconds(secondTimes);
-		WebDriverWait wait = new WebDriverWait(driver, timeout);
+		WebDriverWait wait = new WebDriverWait(driver, secondTimes);
 		boolean result = false;
 		try {
 			result = wait.until(ExpectedConditions.visibilityOf(objEle)) != null ? true : false;
@@ -222,8 +221,7 @@ public class DriverClass{
 	
 	/***
 	 * Quit browser
-	 * 
-	 * @param element
+	 *
 	 * @return
 	 * @since 0.0.1
 	 * @author Lam
@@ -250,5 +248,12 @@ public class DriverClass{
 			e.printStackTrace();
 			return e.toString();
 		}
+	}
+
+	/***
+	 * Is Element exist and display
+	 */
+	public static ReportHandle isElementExist(WebElement objElement){
+		return new ReportHandle( );
 	}
 }
